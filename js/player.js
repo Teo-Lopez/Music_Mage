@@ -27,6 +27,23 @@ class Player {
     this.height = 48;
     
 
+    this.doSound =document.createElement("audio")
+    this.doSound.src = "audio/do.wav"
+    this.reSound =document.createElement("audio")
+    this.reSound.src = "audio/re.wav"
+    this.miSound =document.createElement("audio")
+    this.miSound.src = "audio/mi.wav"
+    this.faSound =document.createElement("audio")
+    this.faSound.src = "audio/fa.wav"
+    this.solSound =document.createElement("audio")
+    this.solSound.src = "audio/sol.wav"
+    this.laSound =document.createElement("audio")
+    this.laSound.src = "audio/la.wav"
+    this.siSound =document.createElement("audio")
+    this.siSound.src = "audio/si.wav"
+
+
+
   
     //this.setListeners();
   }
@@ -43,8 +60,8 @@ class Player {
       this.height,
       this.posX,
       this.posY,
-      this.width*1.6,
-      this.height*1.6
+      this.width*2,
+      this.height*2
     );
 
     //this.animateImg(framesCounter);
@@ -71,33 +88,96 @@ class Player {
     }
   }
 
-  move() {
+  playMusic() {
+    document.onkeydown = event => {
+      switch(event.keyCode) {
+        case 49:
+          this.doSound.play()
+          break;
+        case 50:
+          this.reSound.play()
+          break;
 
+        case 51:
+          this.miSound.play()
+          break;
+
+
+        case 52:
+          this.faSound.play()
+          break;
+
+
+        case 53:
+          this.solSound.play()
+          break;
+
+        case 54:
+          this.laSound.play()
+          break;
+
+        case 55:
+          this.siSound.play()
+          break;
+
+      }
+    }
   }
 
   setListeners() {
     document.onkeydown = event => {
-      console.log("posX",this.posX, "posY",this.posY)
-      console.log("mapX",this.map.posX, "mapY", this.map.posY)      
       
           //if (this.posX >= this.map.endingX && this.posY<= this.map.endingY && this.posX+this.width>=this.map.endingX-32 && this.posY+this.height >= this.map.endingY) {
-          if(event.keycode === 13 && this.posX >= this.map.endingX && this.posY<= this.map.endingY && this.posX+this.width>=this.map.endingX-32 && this.posY+this.height >= this.map.endingY) alert("do")
-        
-          if (event.keyCode === this.keys.RIGHT_KEY && this.posX-1+this.width<= this.map.posX+this.map.width-64) {
-            this.direction = "E"
-            this.img.frameIndexX = 0
-            this.posX += 32*2
-        } else if (event.keyCode === this.keys.LEFT_KEY && this.posX-1>=this.map.posX+64) {
-            this.direction = "W"
-            this.posX -= 32*2
-        } else if (event.keyCode === this.keys.DOWN_KEY && this.posY+this.height<=this.map.posY+this.map.height) {
-            this.direction = "S"
-            this.posY += 32*2
-        } else if (event.keyCode === this.keys.TOP_KEY && this.posY>=this.map.posY+64) {
-            this.img.frameIndexX = 0
-            this.direction = "N"
-            this.posY -= 32*2}
-        }
+
+            if(event.keyCode === 13 && this.posX+this.width*2 >= this.map.endingX && this.posY<=this.map.endingY+64){
+              
+               
+              this.doSound.play();
+
+              setTimeout(()=>{
+                this.reSound.play();
+              }, 1000)
+
+              setTimeout(()=>{  
+                this.miSound.play();
+              }, 2000)
+
+              setTimeout(()=>{
+                this.faSound.play();
+              }, 3000)
+              setTimeout(()=>{
+                this.solSound.play();
+              }, 4000)
+              setTimeout(()=>{
+                this.laSound.play();
+              }, 5000)
+              setTimeout(()=>{
+                this.siSound.play();
+              }, 6000)
+
+
+            }else {
+              if (event.keyCode === this.keys.RIGHT_KEY && this.posX+this.width<= this.map.posX+this.map.width-64) {
+                console.log(this.posX+this.width*2 <= this.map.endingX)
+                
+                this.direction = "E"
+                this.img.frameIndexX = 0
+                this.posX += 32*2
+                console.log(this.posX+this.width, this.map.endingX)
+            } else if (event.keyCode === this.keys.LEFT_KEY && this.posX>=this.map.posX+64) {
+                this.direction = "W"
+                this.posX -= 32*2
+
+            } else if (event.keyCode === this.keys.DOWN_KEY && this.posY+this.height<=this.map.posY+this.map.height-64) {
+                this.direction = "S"
+                this.posY += 32*2
+            } else if (event.keyCode === this.keys.TOP_KEY && this.posY>=this.map.posY+64-32) {
+                this.img.frameIndexX = 0
+                this.direction = "N"
+                this.posY -= 32*2}
+            }
+            }
+          
       }
   }
 

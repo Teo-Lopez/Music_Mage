@@ -31,6 +31,7 @@ const Game = {
     this.setDimensions()
     this.makeBackgrounds()
     this.makeCharacter()
+
     setTimeout(() => {
       alert("Tengo que llegar hasta el final del camino antes de morir congelado. \nCreo que recuerdo un conjuro con el que prender una hoguera con aquella madera.")
     }, 500)
@@ -46,7 +47,7 @@ const Game = {
   },
 
   start: function() {
-
+    this.character.playMusic()
     this.setAllListeners()
     this.motor()
 

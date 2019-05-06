@@ -17,7 +17,7 @@ class Background{
     this.posY = this.gameH/2-this.height
 
     this.startingPositionX = this.posX
-    this.startingPositionY = this.posY+7*32*2
+    this.startingPositionY = this.posY+7*32*2-32    //32 sobra de altura de pj
 
     this.map = []
     this.ending = new Image()
