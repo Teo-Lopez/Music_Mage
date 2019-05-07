@@ -1,18 +1,21 @@
 class Player {
   constructor(gameW, gameH, ctx, keys, map) {
-    this.gameW = gameW;
+    this.gameW = gameW;                 //VALORES GENERALES
     this.gameH = gameH;
     this.ctx = ctx;
     this.keys = keys;
     this.map = map
     
     
-    this.posX = this.map.startingPositionX;
+    this.posX0 =  this.map.startingPositionX
+    this.posY0= map.startingPositionY
+
+    this.posX = this.map.startingPositionX         //VALORES INICIALES DE POSICION
     this.posY= map.startingPositionY
     this.direction = "E"
 
 
-    this.img = new Image();
+    this.img = new Image();                                     //SPRITES
     this.img.src = "img/maleCharacter.png";
 
     // número de imágenes diferentes
@@ -22,12 +25,12 @@ class Player {
     this.img.framesY = 4
     this.img.frameIndexY = 2
 
-    // medidas de la imagen a representar en el canvas
+                                                        // medidas de la imagen a representar en el canvas
     this.width = 32;
     this.height = 48;
     
-
-    this.doSound =document.createElement("audio")
+    
+    this.doSound =document.createElement("audio")         //Datos de que puede tocar el player
     this.doSound.src = "audio/do.wav"
     this.reSound =document.createElement("audio")
     this.reSound.src = "audio/re.wav"
@@ -42,15 +45,13 @@ class Player {
     this.siSound =document.createElement("audio")
     this.siSound.src = "audio/si.wav"
 
+    this.musicPlayed = []                                //array donde se almacenaran las teclas
 
-
-  
-    //this.setListeners();
+    
   }
 
-  draw() {
-    // Documentación drawImage:
-    // https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/drawImage
+
+  draw() {                                                      //PINTA AL PERSONAJE
     
     this.ctx.drawImage(
       this.img,
@@ -64,16 +65,14 @@ class Player {
       this.height*2
     );
 
-    //this.animateImg(framesCounter);
-
 
   }
 
-  animateImg(framesCounter) {
+  animateImg(framesCounter) {                                     //ANIMA AL PERSONAJE
     // se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje
     if (framesCounter % 9 === 0) this.img.frameIndexX += 1;
     if (this.img.frameIndexX > 3) this.img.frameIndexX = 0;
-    switch(this.direction) {
+    switch(this.direction) {                  //DEFINE LA DIRECCIÓN EN LA QUE MIRA
       case "E":
         this.img.frameIndexY = 2
         break;
@@ -88,48 +87,56 @@ class Player {
     }
   }
 
-  playMusic() {
+
+
+  setListeners() {
     document.onkeydown = event => {
-      switch(event.keyCode) {
+      
+      //
+      switch(event.keyCode) {           //CAPACITA AL PLAYER PARA TOCAR
         case 49:
+          console.log("do")
           this.doSound.play()
+          this.musicPlayed.push(event.keyCode)
           break;
         case 50:
           this.reSound.play()
+          this.musicPlayed.push(event.keyCode)
           break;
 
         case 51:
           this.miSound.play()
+          this.musicPlayed.push(event.keyCode)
           break;
 
 
         case 52:
           this.faSound.play()
+          this.musicPlayed.push(event.keyCode)
           break;
 
 
         case 53:
           this.solSound.play()
+          this.musicPlayed.push(event.keyCode)
           break;
 
         case 54:
           this.laSound.play()
+          this.musicPlayed.push(event.keyCode)
           break;
 
         case 55:
           this.siSound.play()
+          this.musicPlayed.push(event.keyCode)
           break;
 
       }
-    }
-  }
 
-  setListeners() {
-    document.onkeydown = event => {
       
-          //if (this.posX >= this.map.endingX && this.posY<= this.map.endingY && this.posX+this.width>=this.map.endingX-32 && this.posY+this.height >= this.map.endingY) {
-
-            if(event.keyCode === 13 && this.posX+this.width*2 >= this.map.endingX && this.posY<=this.map.endingY+64){
+            if(this.checkEnding() && event.keyCode === 13){   
+                        //INICIA LA RESOLUCION
+              alert("A ver si recuerdo como iba el conjuro...") 
               
                
               this.doSound.play();
@@ -155,8 +162,7 @@ class Player {
                 this.siSound.play();
               }, 6000)
 
-
-            }else {
+            } else {                                                    //COMANDOS DE MOVIMIENTO
               if (event.keyCode === this.keys.RIGHT_KEY && this.posX+this.width<= this.map.posX+this.map.width-64) {
                 console.log(this.posX+this.width*2 <= this.map.endingX)
                 
@@ -171,7 +177,7 @@ class Player {
             } else if (event.keyCode === this.keys.DOWN_KEY && this.posY+this.height<=this.map.posY+this.map.height-64) {
                 this.direction = "S"
                 this.posY += 32*2
-            } else if (event.keyCode === this.keys.TOP_KEY && this.posY>=this.map.posY+64-32) {
+            } else if (event.keyCode === this.keys.TOP_KEY && this.posY>=this.map.posY+32) {
                 this.img.frameIndexX = 0
                 this.direction = "N"
                 this.posY -= 32*2}
@@ -179,28 +185,16 @@ class Player {
             }
           
       }
+  
+
+  checkEnding() {
+    return (this.posX+this.width*2 >= this.map.endingX && this.posY<=this.map.endingY+64)
   }
 
-  
-/*
-  endingListeners() {
-    document.onkeyup = event => {
-      console.log("do")
-      
-      if (){
-        // let solution = []
-        // switch(event.keyCode) {
-        //   case this.keys.do:
-        //     console.log("do")
-        //     this.solution.push(this.keys.do)
-        //     console.log(this.solution)
-        //     break;
-        // }
-
-      
-      }
-
-    }*/
-  
-  
-
+  checkSolution() {
+    if (this.musicPlayed.length===8) {this.musicPlayed= []}
+    else if (this.musicPlayed.length===this.map.endingMusic.length && this.map.endingMusic.every((note, idx) => {return  note==this.musicPlayed[idx]})){
+      return true
+    }
+  }    
+}

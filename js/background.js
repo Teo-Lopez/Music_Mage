@@ -28,6 +28,10 @@ class Background{
   }
 
   draw() {
+    console.log(this.posX)
+    console.log(this.posY)
+    console.log(this.width)
+    console.log(this.height)
     this.ctx.drawImage(                   //mapa
       this.img,
       this.posX,
@@ -45,6 +49,29 @@ class Background{
     )
   }
 
+  drawEnding() {
+    this.ending.src = "img/bonfireLighted.png"
+    this.ending.framesX = 3;
+    this.ending.frameIndex = 0;
+    this.ending.width = 32
+    this.ending.height = 32
+    this.ctx.drawImage(
+      this.ending,
+      this.ending.frameIndex * Math.floor(this.ending.width / this.ending.framesX),
+      0,      
+      32,
+      32,
+      this.endingX,
+      this.endingY,
+      32,
+      32)
+    }
+    
+    animateEnding(framesCounter) {
+      if (framesCounter % 9 === 0) this.ending.frameIndex += 1;
+      if (this.img.frameIndex > 3) this.ending.frameIndex = 0;
+    }
+
 }
 
 class BackgroundMain extends Background{
@@ -54,23 +81,7 @@ class BackgroundMain extends Background{
     this.img.src = "img/bg.png"
     this.width *= 2
     this.height *= 2
-    this.map = [
-
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],   // Array correspondiente al mapa main, 20x10
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
-
-    ]
+    this.completed = 0
   }
 
-  endingEvent(){
-
-  }
 }

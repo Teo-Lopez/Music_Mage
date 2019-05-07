@@ -2,24 +2,38 @@
   margin: 0;
   padding: 0;
   border: 0;
+
 }
 
 .background {
-  background-color: rgb(109, 142, 153)
-
+  background-image: url("img/musicBg.jpg");
+  background-size: cover;
 }
 
 .start {
   padding: 40px 80px;
-  background-color: lightskyblue;
+  background-color: rgb(182, 140, 26);
   display: block;
-  margin: 65vh auto;
+  margin: 20px auto 0;
   border: 1px solid rgba(190, 230, 255,.5);
   border-radius: 20px;
   background-image: linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,0));
   font-size: 2.5em;
 }
 
+.inicio {
+  display: block;
+  color: white;
+  font-size: 1.8em;
+  font-weight: 800;
+  text-align: center;
+  margin: 40vh auto 0;
+  padding: 10px 0;
+  background-color: rgba(0,0,0,.65);
+}
+
 .hidden {
   display: none
 }
+
+ 
