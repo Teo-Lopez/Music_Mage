@@ -12,7 +12,7 @@ class Timer  {
   }
   
   update() {
-    this.ctx.font = "20px serif";
+    this.ctx.font = "30px serif";
     this.ctx.fillStyle = "red";
     this.ctx.fillText(this.value, this.posX, this.posY);
     this.value--

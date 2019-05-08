@@ -5,10 +5,10 @@ class Player {
     this.ctx = ctx;
     this.keys = keys;
     this.map = map
-    
+    this.obstacles = undefined
     
     this.posX0 =  this.map.startingPositionX
-    this.posY0= map.startingPositionY
+    this.posY0= this.map.startingPositionY
 
     this.posX = this.map.startingPositionX         //VALORES INICIALES DE POSICION
     this.posY= map.startingPositionY
@@ -50,6 +50,10 @@ class Player {
     
   }
 
+  updatePosition() {
+    this.posX = this.posX0
+    this.posY = this.posY0
+  }
 
   draw() {                                                      //PINTA AL PERSONAJE
     
@@ -93,7 +97,8 @@ class Player {
     document.onkeydown = event => {
       
       //
-      switch(event.keyCode) {           //CAPACITA AL PLAYER PARA TOCAR
+
+        switch(event.keyCode) {           //CAPACITA AL PLAYER PARA TOCAR
         case 49:
           console.log("do")
           this.doSound.play()
@@ -131,10 +136,12 @@ class Player {
           this.musicPlayed.push(event.keyCode)
           break;
 
+      
       }
 
+    document.onkeyup = event => {
       
-            if(this.checkEnding() && event.keyCode === 13){   
+      if(this.checkEnding() && event.keyCode === 13){   
                         //INICIA LA RESOLUCION
               alert("A ver si recuerdo como iba el conjuro...") 
               
@@ -162,30 +169,44 @@ class Player {
                 this.siSound.play();
               }, 6000)
 
-            } else {                                                    //COMANDOS DE MOVIMIENTO
-              if (event.keyCode === this.keys.RIGHT_KEY && this.posX+this.width<= this.map.posX+this.map.width-64) {
-                console.log(this.posX+this.width*2 <= this.map.endingX)
-                
-                this.direction = "E"
-                this.img.frameIndexX = 0
-                this.posX += 32*2
-                console.log(this.posX+this.width, this.map.endingX)
-            } else if (event.keyCode === this.keys.LEFT_KEY && this.posX>=this.map.posX+64) {
-                this.direction = "W"
-                this.posX -= 32*2
-
-            } else if (event.keyCode === this.keys.DOWN_KEY && this.posY+this.height<=this.map.posY+this.map.height-64) {
-                this.direction = "S"
-                this.posY += 32*2
-            } else if (event.keyCode === this.keys.TOP_KEY && this.posY>=this.map.posY+32) {
-                this.img.frameIndexX = 0
-                this.direction = "N"
-                this.posY -= 32*2}
-            }
-            }
-          
+        } else {                                                    //COMANDOS DE MOVIMIENTO
+            if (event.keyCode === this.keys.RIGHT_KEY && this.posX+this.width<= this.map.posX+this.map.width-64 && !this.checkObsBounds(64, 0)) {
+                this.moveRight()
+          } else if (event.keyCode === this.keys.LEFT_KEY && this.posX>=this.map.posX+64 && !this.checkObsBounds(-64, 0)) {
+                this.moveLeft()
+          } else if (event.keyCode === this.keys.DOWN_KEY && this.posY+this.height<=this.map.posY+this.map.height-64 && !this.checkObsBounds(0, 64)) {
+                this.moveDown()
+          } else if (event.keyCode === this.keys.TOP_KEY && this.posY>=this.map.posY+32 && !this.checkObsBounds(0, -64) ) {
+                this.moveUp()
+          }
+        }
       }
+      }
+
+    
+  }
   
+  moveRight() {
+    this.direction = "E"
+    this.img.frameIndexX = 0
+    this.posX += 32*2
+  }
+
+  moveLeft() {
+    this.direction = "W"
+    this.posX -= 32*2
+  }
+
+  moveDown() {
+    this.direction = "S"
+    this.posY += 32*2
+  }
+
+  moveUp() {
+    this.img.frameIndexX = 0
+    this.direction = "N"
+    this.posY -= 32*2
+  }
 
   checkEnding() {
     return (this.posX+this.width*2 >= this.map.endingX && this.posY<=this.map.endingY+64)
@@ -196,5 +217,14 @@ class Player {
     else if (this.musicPlayed.length===this.map.endingMusic.length && this.map.endingMusic.every((note, idx) => {return  note==this.musicPlayed[idx]})){
       return true
     }
-  }    
+  }  
+  
+  checkObsBounds(newPosX, newPosY) {
+    const posX = newPosX + this.posX;
+    const posY = newPosY + this.posY;
+
+    return (this.obstacles.some( obs => {
+      return (posX+this.width>= obs.posX && obs.posX+obs.width - 64>= posX && posY+this.height>= obs.posY+64 && obs.height  - 64 +obs.posY>= posY)
+    }))
+  }
 }

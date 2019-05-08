@@ -10,6 +10,26 @@
   background-size: cover;
 }
 
+.background2 {
+  background-image: url("img/snowBg.jpg");
+  background-size: cover;
+}
+
+.papiro1 {
+  background-image: url("img/papiro1.jpg");
+  background-size: cover;
+}
+
+.papiro2 {
+  background-image: url("img/papiro2.jpg");
+  background-size: cover;
+}
+.papiro3 {
+  background-image: url("img/papiro3.jpg");
+  background-size: cover;
+  
+}
+
 .start {
   padding: 40px 80px;
   background-color: rgb(182, 140, 26);

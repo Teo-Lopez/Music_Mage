@@ -8,10 +8,11 @@ const Game = {
   gameW: undefined,
   gameH: undefined,
   framesCounter: 0,
-  timer: undefined,
   monsters: [],
+  obstacles: [],
   directionsArr: ["W", "N", "E", "S"],
   currentDirection: undefined,
+  level: 1,
 
 
   keys: {                       //Comandos de juego
@@ -30,16 +31,18 @@ const Game = {
   },
 
   init: function(canvasId) {
+
+    document.getElementsByClassName("background")[0].setAttribute("class", "background2")
     this.canvas = document.getElementById(canvasId)       //Valores generales
     this.ctx = this.canvas.getContext("2d")
     this.setDimensions()
-    this.makeBackgrounds()                                
+    this.updateBackgrounds()                                
     this.makeCharacter()
+    this.updateObstacles()
+    this.updateMonsters()
     this.makeTimer()
 
-    setTimeout(() => {
-      alert("Tengo que llegar hasta el final del camino antes de morir congelado. \nCreo que recuerdo un conjuro con el que prender una hoguera con aquella madera.")
-    }, 500)
+  
     this.start()
   },
 
@@ -51,65 +54,66 @@ const Game = {
 
   },
 
-  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 6000)},
+  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 4000)},
 
   start: function() {
-    this.setAllListeners()
-    this.motor()
+    document.getElementById("body").setAttribute("class", "papiro1")
+    setTimeout(()=>{
+      document.getElementById("body").setAttribute("class", "papiro2")
+    }, 10000)
+    setTimeout(()=>{
+      document.getElementById("body").setAttribute("class", "papiro3")
+    }, 20000)
+    setTimeout(()=>{
+      document.getElementById("body").setAttribute("class", "background2")      
+      this.setAllListeners()
+      this.motor()
+      
+    }, 30000)
 
   },
 
   motor: function() {
     this.interval = setInterval(() => {
       if(this.framesCounter > 2000) this.framesCounter=0
-      this.framesCounter++
-      this.erase()
-      this.drawAll()
-      this.timer.update()
-      this.moveAll()
-      this.changeMonstersDirection()
-      this.checkMonsterCollision()
+      setTimeout(()=> {
+
+        this.framesCounter++
+        this.erase()
+        this.drawAll()
+        this.timer.update()
+        this.moveAll()
+        this.changeMonstersDirection()
+        this.checkMonsterCollision()
+        this.checkWin()
+
+      },1000)
       
-      if ( this.timer.checkGameOver()) {
-        this.clear()
-        this.drawGameOver()      
-      } else if (this.character.checkEnding() && this.character.checkSolution()) {
-        this.backgroundMain.drawEnding()
-        //this.animateEnding(this.framesCounter)
-        this.character.musicPlayed = []
-        setTimeout(() => {
-          this.clear()
-          alert("Enhorabuena has superado el nivel!")
-        }, 1000);
-      }
 
 
     }, 1000/this.fps);
   },
 
-  makeBackgrounds: function() {
-    this.backgroundMain = new BackgroundMain(this.ctx, this.gameW, this.gameH)
+  updateBackgrounds: function() {
+    this.backgroundMain = mapsArray[this.level]
   },
 
   makeCharacter: function() {
     this.character = new Player(this.gameW, this.gameH, this.ctx, this.keys, this.backgroundMain, this.framesCounter) 
-    console.log(this.character)
-    this.monsters.push(new Monster(this.gameW, this.gameH, this.ctx, this.backgroundMain, "W", this.framesCounter))
-    this.monsters.push(new Monster(this.gameW, this.gameH, this.ctx, this.backgroundMain, "S", this.framesCounter))
-    this.monsters.push(new Monster(this.gameW, this.gameH, this.ctx, this.backgroundMain, "E", this.framesCounter))
 
   },
 
   drawAll: function() {
     this.backgroundMain.draw()
-    this.character.draw()
     this.monsters.forEach(monster => monster.draw())
+    this.character.draw()
+    this.drawObstacles()
   },
 
   moveAll: function(){
     this.character.animateImg(this.framesCounter)
     this.monsters.forEach(monster => monster.animateImg(this.framesCounter))
-    this.monsters.forEach(monster => monster.move())
+    this.monsters.forEach(monster => monster.move(this.obstacles))
   },
 
   setAllListeners() {
@@ -148,11 +152,46 @@ const Game = {
   changeMonstersDirection() {
     
     if(this.framesCounter%120==0) {
-      console.log(this.directionsArr[Math.floor(Math.random()*4)])
       this.currentDirection = this.directionsArr[Math.floor(Math.random()*4)]
       this.monsters[Math.floor(Math.random()*this.monsters.length)].direction= this.currentDirection
     }
-  }
+  },
     
-  
+  checkWin() {
+    if (this.timer.checkGameOver()) {
+      this.clear()
+      this.drawGameOver()      
+    } else if (this.character.checkEnding() && this.character.checkSolution() && this.level<mapsArray.length) {
+      this.backgroundMain.drawEnding()
+      this.updateBackgrounds()
+      this.updateObstacles()
+      this.updateMonsters()
+      this.character.musicPlayed = []
+      this.level++
+      this.character.updatePosition()
+      alert("Enhorabuena has superado el nivel!")
+    }
+  },
+
+  updatePlayerPosition() {
+    this.character.map = this.backgroundMain
+    this.character.posX = this.backgroundMain.startingPositionX
+    this.character.posY = this.backgroundMain.startingPositionY
+
+  },
+
+  updateMonsters() {
+    this.monsters = []
+    monstersArray[this.level].forEach(monster => this.monsters.push(monster))
+  },
+
+  drawObstacles() {
+    obstaclesArray[this.level].forEach( obs => obs.draw())
+  },
+
+  updateObstacles() {
+    this.obstacles = []
+    obstaclesArray[this.level].forEach(obs => this.obstacles.push(obs))
+    this.character.obstacles = this.obstacles
+  }
 }
