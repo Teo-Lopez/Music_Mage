@@ -1,11 +1,12 @@
 class Player {
-  constructor(gameW, gameH, ctx, keys, map) {
+  constructor(gameW, gameH, ctx, keys, map, loop) {
     this.gameW = gameW;                 //VALORES GENERALES
     this.gameH = gameH;
     this.ctx = ctx;
     this.keys = keys;
     this.map = map
     this.obstacles = undefined
+    this.loop = loop
     
     this.posX0 =  this.map.startingPositionX
     this.posY0= this.map.startingPositionY

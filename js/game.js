@@ -12,7 +12,9 @@ const Game = {
   obstacles: [],
   directionsArr: ["W", "N", "E", "S"],
   currentDirection: undefined,
-  level: 1,
+  loop: new Audio('audio/loop.wav'),
+
+  level: 0,
 
 
   keys: {                       //Comandos de juego
@@ -57,19 +59,20 @@ const Game = {
   makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 4000)},
 
   start: function() {
+    this.playLoop()
     document.getElementById("body").setAttribute("class", "papiro1")
     setTimeout(()=>{
       document.getElementById("body").setAttribute("class", "papiro2")
-    }, 10000)
+    }, 500)
     setTimeout(()=>{
       document.getElementById("body").setAttribute("class", "papiro3")
-    }, 20000)
+    }, 1000)
     setTimeout(()=>{
       document.getElementById("body").setAttribute("class", "background2")      
       this.setAllListeners()
       this.motor()
       
-    }, 30000)
+    }, 1500)
 
   },
 
@@ -79,6 +82,7 @@ const Game = {
       setTimeout(()=> {
 
         this.framesCounter++
+        this.pauseLoop()
         this.erase()
         this.drawAll()
         this.timer.update()
@@ -99,7 +103,7 @@ const Game = {
   },
 
   makeCharacter: function() {
-    this.character = new Player(this.gameW, this.gameH, this.ctx, this.keys, this.backgroundMain, this.framesCounter) 
+    this.character = new Player(this.gameW, this.gameH, this.ctx, this.keys, this.backgroundMain, this.framesCounter,this.loop) 
 
   },
 
@@ -162,6 +166,7 @@ const Game = {
       this.clear()
       this.drawGameOver()      
     } else if (this.character.checkEnding() && this.character.checkSolution() && this.level<mapsArray.length) {
+      
       this.backgroundMain.drawEnding()
       this.updateBackgrounds()
       this.updateObstacles()
@@ -193,5 +198,20 @@ const Game = {
     this.obstacles = []
     obstaclesArray[this.level].forEach(obs => this.obstacles.push(obs))
     this.character.obstacles = this.obstacles
+  },
+
+  playLoop(){
+    this.loop.loop= true
+    this.loop.play();
+  },
+  
+  pauseLoop(){
+    if(this.character.checkEnding()){
+      if(this.loop.volume>0.01) {this.loop.volume -= .01}
+  } else {
+    if(this.loop.volume<1) {this.loop.volume += .01}
+
   }
+  }
+
 }
