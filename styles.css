@@ -30,6 +30,12 @@
   
 }
 
+.win {
+  background-image: url("img/win.jpg");
+  background-size: cover;
+  
+}
+
 .start {
   padding: 40px 80px;
   background-color: rgb(182, 140, 26);
@@ -52,8 +58,150 @@
   background-color: rgba(0,0,0,.65);
 }
 
-.hidden {
-  display: none
+
+.reset {
+  display: block;
+  position: absolute;
+  color: rgb(40,40,40);
+  font-family: 'Architects Daughter', cursive;
+  
+  font-size: 3em;
+  font-weight: 800;
+  top: 60vh;
+  left: 40vw;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 35px 70px;
+  text-align: center;
+  background-color: rgba(245, 245, 245, 0.25)
 }
 
- 
+.gameOver{
+  top: 70vh;
+  left: 44vw;
+  padding: 25px 40px;
+
+}
+
+.hidden {
+  display: none;
+}
+
+#timerDiv {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 300px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+
+
+#note1 {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 100px;
+  left: 498px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+
+
+#note2 {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 100px;
+  left: 598px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+
+#note3 {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 100px;
+  left: 698px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+#note4 {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 100px;
+  left: 798px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+#note5 {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 100px;
+  left: 898px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+
+
+#note6 {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 100px;
+  left: 998px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+
+
+#note7 {
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 100px;
+  left: 1098px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}
+
+.bestScore {
+  height: 42px;
+  position: absolute;
+  text-align: center;
+  margin: 98px;
+  width: 300px;
+  left: 1198px;
+  font-family: 'Architects Daughter', cursive;
+  font-size: 30px;
+  color: black;
+  background-color: rgba(158, 228, 228, 0.877)
+
+}

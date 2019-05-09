@@ -13,8 +13,13 @@ const Game = {
   directionsArr: ["W", "N", "E", "S"],
   currentDirection: undefined,
   loop: new Audio('audio/loop.wav'),
+  buttonSound: new Audio('audio/button.mp3'),
+  gameOverImg: new Image(),
+  resetBtn: document.getElementById("reset"),
+  scoreDiv: document.getElementById("bestScore"),
+  
 
-  level: 0,
+  level: 1,
 
 
   keys: {                       //Comandos de juego
@@ -49,14 +54,14 @@ const Game = {
   },
 
   setDimensions: function() {         
-    this.gameW = window.innerWidth
-    this.gameH = window.innerHeight
+    this.gameW = window.innerWidth-10
+    this.gameH = window.innerHeight-10
     this.canvas.setAttribute('width', this.gameW)
     this.canvas.setAttribute('height', this.gameH)
 
   },
 
-  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 4000)},
+  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 20000, this.gameW, this.gameH)},
 
   start: function() {
     this.playLoop()
@@ -74,15 +79,20 @@ const Game = {
       
     }, 1500)
 
+    setTimeout(() => {
+      this.scoreDiv.setAttribute("class", "bestScore")
+      this.scoreDiv.innerHTML = "High Score: "+localStorage.getItem("HighScore")      
+  
+    },2000)
   },
-
+  
   motor: function() {
     this.interval = setInterval(() => {
       if(this.framesCounter > 2000) this.framesCounter=0
       setTimeout(()=> {
 
         this.framesCounter++
-        this.pauseLoop()
+        // this.pauseLoop()
         this.erase()
         this.drawAll()
         this.timer.update()
@@ -91,7 +101,7 @@ const Game = {
         this.checkMonsterCollision()
         this.checkWin()
 
-      },1000)
+      },500)
       
 
 
@@ -135,12 +145,22 @@ const Game = {
 
   drawGameOver() {
     this.erase()
-    this.ctx.font = "120px serif";
-    this.ctx.fillStyle = "red";
-    this.ctx.fillText("GAME OVER", this.gameW/2-400, this.gameH/2);
-    this.ctx.font = "30px serif";
-    this.ctx.fillStyle = "red";
-    this.ctx.fillText("Has muerto de frio", this.gameW/2-200, this.gameH/2+50);
+    this.hideDivs()
+    this.resetBtn.setAttribute("class", "reset gameOver")
+    this.reset()
+    this.gameOverImg.src = "img/gameOver.jpeg"
+    this.ctx.drawImage(                   
+      this.gameOverImg,
+      this.backgroundMain.posX,
+      this.backgroundMain.posY,
+      this.backgroundMain.width,
+      this.backgroundMain.height
+    )
+
+
+    //this.ctx.font = "30px serif";
+    //this.ctx.fillStyle = "red";
+    //this.ctx.fillText("Has muerto de frio", this.gameW/2-200, this.gameH/2+50);
   },
 
   checkMonsterCollision() {
@@ -165,16 +185,25 @@ const Game = {
     if (this.timer.checkGameOver()) {
       this.clear()
       this.drawGameOver()      
-    } else if (this.character.checkEnding() && this.character.checkSolution() && this.level<mapsArray.length) {
+    } else if (this.character.checkEnding() && this.character.checkSolution() && this.level<mapsArray.length - 1) {
       
+      this.level++
       this.backgroundMain.drawEnding()
       this.updateBackgrounds()
       this.updateObstacles()
       this.updateMonsters()
       this.character.musicPlayed = []
-      this.level++
       this.character.updatePosition()
       alert("Enhorabuena has superado el nivel!")
+    } else if (this.character.checkEnding() && this.character.checkSolution()){
+      this.clear()
+      this.hideDivs()
+      localStorage.setItem("HighScore",this.timer.initialValue-this.timer.value)
+      this.scoreDiv.innerHTML = localStorage.getItem("HighScore")
+      this.erase()
+      document.getElementById("body").setAttribute("class", "win")
+      this.resetBtn.setAttribute("class", "reset")      
+      this.reset()
     }
   },
 
@@ -201,17 +230,44 @@ const Game = {
   },
 
   playLoop(){
-    this.loop.loop= true
+    this.loop.volume = 0.3
+    this.loop.loop = true
     this.loop.play();
   },
   
-  pauseLoop(){
-    if(this.character.checkEnding()){
-      if(this.loop.volume>0.01) {this.loop.volume -= .01}
-  } else {
-    if(this.loop.volume<1) {this.loop.volume += .01}
+  // pauseLoop(){
+  //   if(this.character.checkEnding()){
+  //     if(this.loop.volume>0.01) {this.loop.volume -= .01}
+  //   } else {
+  //       if(this.loop.volume<0.3) {this.loop.volume += .01}
+  //   }
+  // },
+  
+  reset() {
+    this.resetBtn.onclick = () => {
+      this.buttonSound.play()
+      this.framesCounter = 0
+      this.character.musicPlayed = []
+      this.character.posX = this.character.posX0
+      this.character.posY = this.character.posY0
+      this.level = 0
+      this.updateBackgrounds()                                
+      this.updateObstacles()
+      this.updateMonsters()
+      this.timer.value = this.timer.initialValue
+      document.getElementById("body").setAttribute("class", "background2")
+      this.scoreDiv.setAttribute("class", "bestScore")
+      this.resetBtn.setAttribute("class", "reset hidden")
 
-  }
-  }
 
+      this.motor()
+    }
+   
+  },
+
+  hideDivs() {
+    document.getElementsByName("topBar").forEach(elm => {
+      elm.setAttribute("class", "hidden")
+      elm.innerHTML=""})
+  }
 }

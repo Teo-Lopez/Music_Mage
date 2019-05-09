@@ -7,7 +7,7 @@ class Monster {
     this.framesCounter = framesCounter
 
     
-    this.posX = (Math.random() * (this.map.width+this.map.posX-200 - this.map.posX+64)) + this.map.posX+64
+    this.posX = (Math.random() * (this.map.width+this.map.posX-300 - this.map.posX+64)) + this.map.posX+64
     this.posY = (Math.random()* (this.map.height+this.map.posY-200 - this.map.posY)) + this.map.posY
     this.direction = direction
     this.vel= 4

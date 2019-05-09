@@ -31,6 +31,8 @@ class Player {
     this.height = 48;
     
     
+    this.walkingSound = document.createElement("audio")
+    this.walkingSound.src = "audio/walkingshort.mp3"
     this.doSound =document.createElement("audio")         //Datos de que puede tocar el player
     this.doSound.src = "audio/do.wav"
     this.reSound =document.createElement("audio")
@@ -46,9 +48,17 @@ class Player {
     this.siSound =document.createElement("audio")
     this.siSound.src = "audio/si.wav"
 
-    this.musicPlayed = []                                //array donde se almacenaran las teclas
+    this.musicPlayed = []                      //array donde se almacenaran las teclas
+    this.divArray = [
+      document.getElementById("note1"),
+      document.getElementById("note2"),
+      document.getElementById("note3"),
+      document.getElementById("note4"),
+      document.getElementById("note5"),
+      document.getElementById("note6"),
+      document.getElementById("note7")
+    ]       
 
-    
   }
 
   updatePosition() {
@@ -92,56 +102,76 @@ class Player {
     }
   }
 
-
+  clearNotesDiv(){
+    this.musicPlayed = []
+    this.divArray.forEach(div => div.innerHTML="")
+  }
 
   setListeners() {
-    document.onkeydown = event => {
-      
-      //
 
-        switch(event.keyCode) {           //CAPACITA AL PLAYER PARA TOCAR
+    
+    document.onkeyup = event => {
+      if(this.musicPlayed.length >=7) {
+        this.errorSound()
+        this.clearNotesDiv()
+      } else {
+
+      switch(event.keyCode) {           //CAPACITA AL PLAYER PARA TOCAR
         case 49:
           console.log("do")
           this.doSound.play()
+          this.divArray[this.musicPlayed.length].innerHTML = "DO"
+          this.divArray[this.musicPlayed.length].setAttribute("class", "")
           this.musicPlayed.push(event.keyCode)
           break;
         case 50:
           this.reSound.play()
+          this.divArray[this.musicPlayed.length].innerHTML = "RE"
+          this.divArray[this.musicPlayed.length].setAttribute("class", "")
           this.musicPlayed.push(event.keyCode)
           break;
 
         case 51:
           this.miSound.play()
+          this.divArray[this.musicPlayed.length].innerHTML = "MI"
+          this.divArray[this.musicPlayed.length].setAttribute("class", "")
           this.musicPlayed.push(event.keyCode)
           break;
 
 
         case 52:
           this.faSound.play()
+          this.divArray[this.musicPlayed.length].innerHTML = "FA"
+          this.divArray[this.musicPlayed.length].setAttribute("class", "")
           this.musicPlayed.push(event.keyCode)
           break;
 
 
         case 53:
           this.solSound.play()
+          this.divArray[this.musicPlayed.length].innerHTML = "SOL"
+          this.divArray[this.musicPlayed.length].setAttribute("class", "")
           this.musicPlayed.push(event.keyCode)
           break;
 
         case 54:
           this.laSound.play()
+          this.divArray[this.musicPlayed.length].innerHTML = "LA"
+          this.divArray[this.musicPlayed.length].setAttribute("class", "")
           this.musicPlayed.push(event.keyCode)
           break;
 
         case 55:
           this.siSound.play()
+          this.divArray[this.musicPlayed.length].innerHTML = "SI"
+          this.divArray[this.musicPlayed.length].setAttribute("class", "")
           this.musicPlayed.push(event.keyCode)
           break;
 
       
       }
+    }
 
-    document.onkeyup = event => {
-      
       if(this.checkEnding() && event.keyCode === 13){   
                         //INICIA LA RESOLUCION
               alert("A ver si recuerdo como iba el conjuro...") 
@@ -181,7 +211,7 @@ class Player {
                 this.moveUp()
           }
         }
-      }
+      
       }
 
     
@@ -191,22 +221,33 @@ class Player {
     this.direction = "E"
     this.img.frameIndexX = 0
     this.posX += 32*2
+    this.walkingSound.volume = 0.4
+    this.walkingSound.play()
   }
 
   moveLeft() {
     this.direction = "W"
     this.posX -= 32*2
+    this.walkingSound.volume = 0.4
+    this.walkingSound.play()
+
   }
 
   moveDown() {
     this.direction = "S"
     this.posY += 32*2
+    this.walkingSound.volume = 0.4
+    this.walkingSound.play()
+
   }
 
   moveUp() {
     this.img.frameIndexX = 0
     this.direction = "N"
     this.posY -= 32*2
+    this.walkingSound.volume = 0.4
+    this.walkingSound.play()
+
   }
 
   checkEnding() {
@@ -227,5 +268,15 @@ class Player {
     return (this.obstacles.some( obs => {
       return (posX+this.width>= obs.posX && obs.posX+obs.width - 64>= posX && posY+this.height>= obs.posY+64 && obs.height  - 64 +obs.posY>= posY)
     }))
+  }
+
+  errorSound() {
+    this.doSound.play()
+    this.reSound.play()
+    this.miSound.play()
+    this.faSound.play()
+    this.solSound.play()
+    this.laSound.play()
+    this.siSound.play()
   }
 }

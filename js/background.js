@@ -76,9 +76,7 @@ class Background2 extends Background{
     this.endingMusic = [49, 50, 51, 52, 53, 54, 55]
   }
   
-  drawObstacles() {
-
-  }
+ 
 }
 
 class Background3 extends Background{
@@ -103,5 +101,15 @@ class Background3 extends Background{
       this.width,
       this.height+64*2
     )
+
+
+    this.ctx.drawImage(                    //ending event
+      this.ending,
+      this.endingX,
+      this.endingY,
+      32*2,
+      32*2
+    )
+    
   }
 }
