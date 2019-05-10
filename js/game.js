@@ -61,7 +61,7 @@ const Game = {
 
   },
 
-  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 200000, this.gameW, this.gameH)},
+  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 20000, this.gameW, this.gameH)},
 
   start: function() {
     this.playLoop()
@@ -199,7 +199,7 @@ const Game = {
     } else if (this.character.checkEnding() && this.character.checkSolution()){
       this.clear()
       this.hideDivs()
-      localStorage.setItem("HighScore",this.timer.initialValue-this.timer.value)
+      localStorage.setItem("HighScore",this.timer.value)
       this.scoreDiv.innerHTML = localStorage.getItem("HighScore")
       this.erase()
       document.getElementById("body").setAttribute("class", "win")
