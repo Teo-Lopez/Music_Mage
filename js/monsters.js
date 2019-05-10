@@ -22,10 +22,14 @@ class Monster {
                                                         // medidas de la imagen a representar en el canvas
     this.width = 106;
     this.height = 64;
+
+    this.wolfSound = new Audio("audio/wolfSound.mp3")
+    this.wolfSound.volume = 0.3
+
   }
 
   draw() {
-    
+    if (Math.random()*80000<10) {this.playWolfSound()}
     this.ctx.drawImage(
       this.img,
       this.img.frameIndex * Math.floor(this.img.width / this.img.framesX),
@@ -82,10 +86,12 @@ class Monster {
       }
   
   boundaries() {
-    return (this.posX+this.width<=this.map.posX+1280 && this.posX-64>=this.map.posX && this.posY>=this.map.posY && this.posY+this.height<= this.map.posY+640)
+    return (this.posX+this.width<=this.map.posX+1280-66 && this.posX-64>=this.map.posX && this.posY>=this.map.posY && this.posY+this.height<= this.map.posY+640)
   }
   
-
+  playWolfSound() {
+    this.wolfSound.play()
+  }
 }  
 
 class Troll extends Monster {
@@ -121,6 +127,8 @@ class Troll extends Monster {
       this.height*1.5
     );
     }
+
+  playWolfSound() {}
 
   animateImg(framesCounter) {                                     //ANIMA AL PERSONAJE
     if (this.direction === "W") {this.img.frameIndex = 0 } else if (this.direction === "E") { this.img.frameIndex = 1}

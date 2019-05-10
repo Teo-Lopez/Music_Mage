@@ -38,14 +38,57 @@
 
 .start {
   padding: 40px 80px;
-  background-color: rgb(182, 140, 26);
+  background-color: rgba(255, 207, 48, .99);
   display: block;
   margin: 20px auto 0;
-  border: 1px solid rgba(190, 230, 255,.5);
+  border: 1px solid rgba(190, 230, 255,.1);
   border-radius: 20px;
-  background-image: linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,0));
+  background-image: linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,0));
   font-size: 2.5em;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  letter-spacing: 2.5px;
 }
+
+.start:hover {
+  background-color: rgb(90, 248, 195);
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
+}
+
+
+.gender {
+  text-align: center;
+  display: inline-block;
+  margin: 10 auto;
+  margin-left: 33vw;
+  width: 150px;
+  
+}
+
+.genderLeft:hover {
+  background-color: rgb(216, 70, 216);
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
+}
+
+.genderRight{
+  margin:0;
+  
+}
+
+
+.genderRight:hover {
+  background-color: rgb(115, 219, 233);
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
+}
+
 
 .inicio {
   display: block;
@@ -53,7 +96,7 @@
   font-size: 1.8em;
   font-weight: 800;
   text-align: center;
-  margin: 40vh auto 0;
+  margin: 30vh auto 0;
   padding: 10px 0;
   background-color: rgba(0,0,0,.65);
 }

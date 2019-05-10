@@ -1,12 +1,11 @@
 class Player {
-  constructor(gameW, gameH, ctx, keys, map, loop) {
+  constructor(gameW, gameH, ctx, keys, map, gender) {
     this.gameW = gameW;                 //VALORES GENERALES
     this.gameH = gameH;
     this.ctx = ctx;
     this.keys = keys;
     this.map = map
     this.obstacles = undefined
-    this.loop = loop
     
     this.posX0 =  this.map.startingPositionX
     this.posY0= this.map.startingPositionY
@@ -16,8 +15,9 @@ class Player {
     this.direction = "E"
 
 
-    this.img = new Image();                                     //SPRITES
-    this.img.src = "img/maleCharacter.png";
+    this.img = new Image();   
+    console.log(arguments)                                  //SPRITES
+    this.img.src = gender;
 
     // número de imágenes diferentes
     this.img.framesX = 4;
@@ -176,29 +176,8 @@ class Player {
                         //INICIA LA RESOLUCION
               alert("A ver si recuerdo como iba el conjuro...") 
               
-               
-              this.doSound.play();
-
-              setTimeout(()=>{
-                this.reSound.play();
-              }, 1000)
-
-              setTimeout(()=>{  
-                this.miSound.play();
-              }, 2000)
-
-              setTimeout(()=>{
-                this.faSound.play();
-              }, 3000)
-              setTimeout(()=>{
-                this.solSound.play();
-              }, 4000)
-              setTimeout(()=>{
-                this.laSound.play();
-              }, 5000)
-              setTimeout(()=>{
-                this.siSound.play();
-              }, 6000)
+              this.map.playEnding()
+              
 
         } else {                                                    //COMANDOS DE MOVIMIENTO
             if (event.keyCode === this.keys.RIGHT_KEY && this.posX+this.width<= this.map.posX+this.map.width-64 && !this.checkObsBounds(64, 0)) {

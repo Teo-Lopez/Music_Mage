@@ -19,7 +19,7 @@ const Game = {
   scoreDiv: document.getElementById("bestScore"),
   
 
-  level: 1,
+  level: 0,
 
 
   keys: {                       //Comandos de juego
@@ -37,14 +37,14 @@ const Game = {
     si: 55,
   },
 
-  init: function(canvasId) {
-
+  init: function(canvasId, gender) {
+    
     document.getElementsByClassName("background")[0].setAttribute("class", "background2")
     this.canvas = document.getElementById(canvasId)       //Valores generales
     this.ctx = this.canvas.getContext("2d")
     this.setDimensions()
     this.updateBackgrounds()                                
-    this.makeCharacter()
+    this.makeCharacter(gender)
     this.updateObstacles()
     this.updateMonsters()
     this.makeTimer()
@@ -61,29 +61,29 @@ const Game = {
 
   },
 
-  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 20000, this.gameW, this.gameH)},
+  makeTimer: function() { this.timer = new Timer(this.ctx, this.backgroundMain.posX, this.backgroundMain.posY, 200000, this.gameW, this.gameH)},
 
   start: function() {
     this.playLoop()
     document.getElementById("body").setAttribute("class", "papiro1")
     setTimeout(()=>{
       document.getElementById("body").setAttribute("class", "papiro2")
-    }, 500)
+    }, 12000)
     setTimeout(()=>{
       document.getElementById("body").setAttribute("class", "papiro3")
-    }, 1000)
+    }, 20000)
     setTimeout(()=>{
       document.getElementById("body").setAttribute("class", "background2")      
       this.setAllListeners()
       this.motor()
       
-    }, 1500)
+    }, 26000)
 
     setTimeout(() => {
       this.scoreDiv.setAttribute("class", "bestScore")
       this.scoreDiv.innerHTML = "High Score: "+localStorage.getItem("HighScore")      
   
-    },2000)
+    }, 26000)
   },
   
   motor: function() {
@@ -92,7 +92,7 @@ const Game = {
       setTimeout(()=> {
 
         this.framesCounter++
-        // this.pauseLoop()
+        this.pauseLoop()
         this.erase()
         this.drawAll()
         this.timer.update()
@@ -112,8 +112,8 @@ const Game = {
     this.backgroundMain = mapsArray[this.level]
   },
 
-  makeCharacter: function() {
-    this.character = new Player(this.gameW, this.gameH, this.ctx, this.keys, this.backgroundMain, this.framesCounter,this.loop) 
+  makeCharacter: function(gender) {
+    this.character = new Player(this.gameW, this.gameH, this.ctx, this.keys, this.backgroundMain, gender) 
 
   },
 
@@ -190,6 +190,7 @@ const Game = {
       this.level++
       this.backgroundMain.drawEnding()
       this.updateBackgrounds()
+      this.character.map = this.backgroundMain
       this.updateObstacles()
       this.updateMonsters()
       this.character.musicPlayed = []
@@ -235,13 +236,13 @@ const Game = {
     this.loop.play();
   },
   
-  // pauseLoop(){
-  //   if(this.character.checkEnding()){
-  //     if(this.loop.volume>0.01) {this.loop.volume -= .01}
-  //   } else {
-  //       if(this.loop.volume<0.3) {this.loop.volume += .01}
-  //   }
-  // },
+  pauseLoop(){
+    if(this.character.checkEnding()){
+      if(this.loop.volume>0.05) {this.loop.volume -= .01}
+    } else {
+        if(this.loop.volume<0.31) {this.loop.volume += .01}
+    }
+  },
   
   reset() {
     this.resetBtn.onclick = () => {
